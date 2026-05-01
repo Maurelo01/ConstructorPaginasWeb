@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const parserDB = require('./gramatica'); 
 const parserEstilos = require('./estilos'); 
+const parserComponentes = require('./componentes');
 const GestorEstilos = require('./GestorEstilos');
 const GestorDB = require('./GestorDB');
 const app = express();
@@ -38,6 +39,20 @@ app.post('/api/ejecutar-estilos', (req, res) =>
     catch (error)
     {
         res.status(500).json({ exito: false, errores: [{ tipo: 'Fatal', descripcion: error.message }] });
+    }
+});
+
+app.post('/api/ejecutar-componentes', (req, res) =>
+{
+    const { codigoComponente } = req.body;
+    try
+    {
+        const ast = parserComponentes.parse(codigoComponente);
+        res.json({ exito: true, ast: ast });
+    }
+    catch (error)
+    {
+        res.status(500).json({ exito: false, error: error.message });
     }
 });
 
