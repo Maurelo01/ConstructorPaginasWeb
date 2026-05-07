@@ -5,6 +5,7 @@ const parserEstilos = require('./estilos');
 const parserComponentes = require('./componentes');
 const GestorEstilos = require('./GestorEstilos');
 const GestorDB = require('./GestorDB');
+const GestorComponentes = require('./GestorComponentes');
 const app = express();
 const PORT = 3000;
 app.use(cors());
@@ -48,7 +49,9 @@ app.post('/api/ejecutar-componentes', (req, res) =>
     try
     {
         const ast = parserComponentes.parse(codigoComponente);
-        res.json({ exito: true, ast: ast });
+        const gestor = new GestorComponentes(ast);
+        gestor.ejecutar();
+        res.json({ exito: gestor.errores.length === 0, htmlGenerado: gestor.resultadoGenerado, errores: gestor.errores, ast: ast });
     }
     catch (error)
     {

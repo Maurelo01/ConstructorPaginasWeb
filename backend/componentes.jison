@@ -238,7 +238,7 @@ attr_submit
     ;
 
 input_text
-    : R_INPUT_TEXT MENOR lista_estilos MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    : R_INPUT_TEXT MENOR lista_estilos MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "text", estilos: $3, atributos: $6, linea: this._$.first_line };
     }
@@ -249,18 +249,18 @@ input_text
     ;
 
 input_number
-    : R_INPUT_NUMBER MENOR lista_estilos MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    : R_INPUT_NUMBER MENOR lista_estilos MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "number", estilos: $3, atributos: $6, linea: this._$.first_line };
     }
-    | R_INPUT_NUMBER MENOR MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    | R_INPUT_NUMBER MENOR MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "number", estilos: [], atributos: $5, linea: this._$.first_line };
     }
     ;
 
 input_bool
-    : R_INPUT_BOOL MENOR lista_estilos MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    : R_INPUT_BOOL MENOR lista_estilos MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "bool", estilos: $3, atributos: $6, linea: this._$.first_line };
     }
@@ -345,7 +345,7 @@ caso
     ;
 
 default_opcional
-    : R_DEFAULT DOS_PUNTOS LLAVE_IZQ elementos_opc LLAVE_DER { $$ = $4; }
+    : COMA R_DEFAULT DOS_PUNTOS LLAVE_IZQ elementos_opc LLAVE_DER { $$ = $5; }
     | { $$ = null; }
     ;
 
