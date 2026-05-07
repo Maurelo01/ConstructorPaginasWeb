@@ -21,7 +21,7 @@ app.post('/api/ejecutar-db', (req, res) =>
     {
         const ast = parserDB.parse(codigoDB);
         baseDeDatosGlobal.ejecutar(ast);
-        res.json({ exito: baseDeDatosGlobal.errores.length === 0, errores: baseDeDatosGlobal.errores, ast: ast, estadoDB: Array.from(baseDeDatosGlobal.tablas.keys())});
+        res.json({ exito: baseDeDatosGlobal.errores.length === 0, errores: baseDeDatosGlobal.errores, ast: ast, estadoDB: baseDeDatosGlobal.obtenerTablas()});
     }
     catch (error)
     {
