@@ -282,7 +282,10 @@ atributos_submit
     ;
 
 attr_submit
-    : ID DOS_PUNTOS CADENA { $$ = { nombre: $1, valor: $3 }; }
+    : ID DOS_PUNTOS CADENA 
+    { $$ = { nombre: $1, valor: $3 }; }
+    | R_FUNCTION DOS_PUNTOS CADENA 
+    { $$ = { nombre: "function", valor: $3 }; }
     ;
 
 input_text
@@ -290,7 +293,7 @@ input_text
     {
         $$ = { tipo: "INPUT", subtipo: "text", estilos: $3, atributos: $6, linea: this._$.first_line };
     }
-    | R_INPUT_TEXT MENOR MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    | R_INPUT_TEXT MENOR MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "text", estilos: [], atributos: $5, linea: this._$.first_line };
     }
@@ -312,7 +315,7 @@ input_bool
     {
         $$ = { tipo: "INPUT", subtipo: "bool", estilos: $3, atributos: $6, linea: this._$.first_line };
     }
-    | R_INPUT_BOOL MENOR MAYOR LLAVE_IZQ lista_attr_input PAR_DER
+    | R_INPUT_BOOL MENOR MAYOR PAR_IZQ lista_attr_input PAR_DER
     {
         $$ = { tipo: "INPUT", subtipo: "bool", estilos: [], atributos: $5, linea: this._$.first_line };
     }
