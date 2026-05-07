@@ -19,6 +19,14 @@
 "contenedor" return 'E_CONTENEDOR';
 "boton" return 'E_BOTON';
 
+/* Tipos de Datos y Reservadas */
+"int" return 'R_INT';
+"float" return 'R_FLOAT';
+"string" return 'R_STRING';
+"boolean" return 'R_BOOLEAN';
+"char" return 'R_CHAR';
+"function" return 'R_FUNCTION';
+
 /* Otras palabras reservadas */
 "for" return 'R_FOR';
 "each" return 'R_EACH';
@@ -72,7 +80,47 @@
 
 %%
 inicio
-    : elementos_opc EOF { return $1; }
+    : lista_componentes EOF { return { tipo: "RAIZ_COMPONENTES", componentes: $1 }; }
+    ;
+
+lista_componentes
+    : lista_componentes componente { $1.push($2); $$ = $1; }
+    | componente { $$ = [$1]; }
+    ;
+
+componente
+    : ID PAR_IZQ parametros_opc PAR_DER LLAVE_IZQ elementos_opc LLAVE_DER
+    {
+        $$ = { tipo: "COMPONENTE", nombre: $1, parametros: $3, elementos: $6, linea: this._$.first_line };
+    }
+    | error LLAVE_DER
+    {
+        $$ = { tipo: "ERROR", clase: "Sintáctico", lexema: yytext, linea: yylineno + 1 };
+    }
+    ;
+    
+parametros_opc
+    : lista_parametros { $$ = $1; }
+    | { $$ = []; }
+    ;
+
+lista_parametros
+    : lista_parametros COMA parametro { $1.push($3); $$ = $1; }
+    | parametro { $$ = [$1]; }
+    ;
+
+parametro
+    : tipo_dato ID { $$ = { tipo_dato: $1, id: $2 }; }
+    | tipo_dato VARIABLE { $$ = { tipo_dato: $1, id: $2 }; }
+    ;
+
+tipo_dato
+    : R_INT { $$ = "int"; }
+    | R_FLOAT { $$ = "float"; }
+    | R_STRING { $$ = "string"; }
+    | R_BOOLEAN { $$ = "boolean"; }
+    | R_CHAR { $$ = "char"; }
+    | R_FUNCTION { $$ = "function"; }
     ;
 
 elementos_opc
