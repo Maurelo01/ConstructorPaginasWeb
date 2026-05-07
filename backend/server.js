@@ -3,13 +3,16 @@ const cors = require('cors');
 const parserDB = require('./gramatica'); 
 const parserEstilos = require('./estilos'); 
 const parserComponentes = require('./componentes');
+const parserMain = require('./main');
 const GestorEstilos = require('./GestorEstilos');
 const GestorDB = require('./GestorDB');
 const GestorComponentes = require('./GestorComponentes');
+const GestorMain = require('./GestorMain');
 const app = express();
 const PORT = 3000;
 app.use(cors());
 app.use(express.json());
+const baseDeDatosGlobal = new GestorDB();
 
 app.post('/api/ejecutar-db', (req, res) => 
 {
@@ -17,9 +20,8 @@ app.post('/api/ejecutar-db', (req, res) =>
     try 
     {
         const ast = parserDB.parse(codigoDB);
-        const gestor = new GestorDB(ast);
-        gestor.ejecutar();
-        res.json({ exito: gestor.errores.length === 0, errores: gestor.errores, ast: ast, estadoDB: Array.from(gestor.estadoTablas.keys())});
+        baseDeDatosGlobal.ejecutar(ast);
+        res.json({ exito: baseDeDatosGlobal.errores.length === 0, errores: baseDeDatosGlobal.errores, ast: ast, estadoDB: Array.from(baseDeDatosGlobal.tablas.keys())});
     }
     catch (error)
     {
@@ -56,6 +58,22 @@ app.post('/api/ejecutar-componentes', (req, res) =>
     catch (error)
     {
         res.status(500).json({ exito: false, error: error.message });
+    }
+});
+
+app.post('/api/ejecutar-proyecto', (req, res) =>
+{
+    const { codigoPrincipal } = req.body;
+    try
+    {
+        const ast = parserMain.parse(codigoPrincipal);
+        const gestor = new GestorMain(ast, baseDeDatosGlobal);
+        gestor.ejecutar();
+        res.json({exito: gestor.errores.length === 0, consola: gestor.consola, errores: gestor.errores, ast: ast});
+    }
+    catch (error)
+    {
+        res.status(500).json({ exito: false, errores: [{ tipo: 'Fatal', descripcion: error.message }] });
     }
 });
 

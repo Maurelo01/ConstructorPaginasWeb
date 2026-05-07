@@ -11,14 +11,17 @@ class GestorComponentes
 
     ejecutar()
     {
-        if (!this.ast || this.ast.length === 0) return;
+        if (!this.ast || this.ast.tipo !== "RAIZ_COMPONENTES") return;
         let entorno = new Entorno(null);
         entorno.guardar("$opcion", "b", "string");
         entorno.guardar("$lista", ["Manzana", "Pera", "Uva"], "array");
-        this.ast.forEach(nodo =>
+        if (this.ast.componentes && this.ast.componentes.length > 0)
         {
-            this.resultadoGenerado += this.manejarNodo(nodo, entorno);
-        });
+            this.ast.componentes.forEach(nodo =>
+            {
+                this.resultadoGenerado += this.manejarNodo(nodo, entorno);
+            });
+        }
     }
 
     manejarNodo(nodo, entorno)
@@ -26,6 +29,8 @@ class GestorComponentes
         if (!nodo) return "";
         switch (nodo.tipo)
         {
+            case "COMPONENTE":
+                return this.manejarComponente(nodo, entorno);
             case "ERROR":
                 return this.manejarError(nodo);
             case "ETIQUETA":
@@ -89,6 +94,19 @@ class GestorComponentes
             return izquierda !== derecha;
         }
         return false;
+    }
+
+    manejarComponente(nodo, entorno)
+    {
+        let html = "";
+        if (nodo.elementos && nodo.elementos.length > 0)
+        {
+            nodo.elementos.forEach(elem =>
+            {
+                html += this.manejarNodo(elem, entorno);
+            });
+        }
+        return html;
     }
 
     manejarIf(nodo, entorno)

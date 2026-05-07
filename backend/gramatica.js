@@ -72,12 +72,12 @@
   }
 */
 var gramatica = (function(){
-var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,6],$V1=[1,7],$V2=[1,8],$V3=[1,9],$V4=[2,5,10,11,12],$V5=[1,21],$V6=[8,17];
+var o=function(k,v,o,l){for(o=o||{},l=k.length;l--;o[k[l]]=v);return o},$V0=[1,9],$V1=[1,10],$V2=[1,11],$V3=[1,12],$V4=[2,5,13,14,15],$V5=[1,28],$V6=[1,33],$V7=[18,23],$V8=[8,18];
 var parser = {trace: function trace () { },
 yy: {},
-symbols_: {"error":2,"inicio":3,"instrucciones":4,"EOF":5,"instruccion":6,"crear_tabla":7,"PUNTOCOMA":8,"eliminar_reg":9,"ERROR_LEX":10,"RW_TABLE":11,"ID":12,"RW_COLUMNS":13,"lista_columnas":14,"RW_DELETE":15,"NUMERO":16,"COMA":17,"columna":18,"$accept":0,"$end":1},
-terminals_: {2:"error",5:"EOF",8:"PUNTOCOMA",10:"ERROR_LEX",11:"RW_TABLE",12:"ID",13:"RW_COLUMNS",15:"RW_DELETE",16:"NUMERO",17:"COMA"},
-productions_: [0,[3,2],[4,2],[4,1],[6,2],[6,2],[6,2],[6,1],[7,4],[9,3],[14,3],[14,1],[18,2]],
+symbols_: {"error":2,"inicio":3,"instrucciones":4,"EOF":5,"instruccion":6,"crear_tabla":7,"PUNTOCOMA":8,"insertar_reg":9,"actualizar_reg":10,"eliminar_reg":11,"seleccionar_col":12,"ERROR_LEX":13,"RW_TABLE":14,"ID":15,"RW_COLUMNS":16,"lista_columnas":17,"COMA":18,"columna":19,"IGUAL":20,"CORCHETE_IZQ":21,"lista_asignaciones":22,"CORCHETE_DER":23,"RW_IN":24,"NUMERO":25,"RW_DELETE":26,"PUNTO":27,"asignacion":28,"CADENA":29,"$accept":0,"$end":1},
+terminals_: {2:"error",5:"EOF",8:"PUNTOCOMA",13:"ERROR_LEX",14:"RW_TABLE",15:"ID",16:"RW_COLUMNS",18:"COMA",20:"IGUAL",21:"CORCHETE_IZQ",23:"CORCHETE_DER",24:"RW_IN",25:"NUMERO",26:"RW_DELETE",27:"PUNTO",29:"CADENA"},
+productions_: [0,[3,2],[4,2],[4,1],[6,2],[6,2],[6,2],[6,2],[6,2],[6,2],[6,1],[7,4],[17,3],[17,1],[19,2],[19,3],[9,4],[10,6],[11,3],[12,3],[22,3],[22,1],[28,3],[28,3]],
 performAction: function anonymous(yytext, yyleng, yylineno, yy, yystate /* action[1] */, $$ /* vstack */, _$ /* lstack */) {
 /* this == yyval */
 
@@ -89,42 +89,72 @@ break;
 case 2:
  this.$ = $$[$0-1]; this.$.push($$[$0]); 
 break;
-case 3: case 11:
+case 3: case 13:
  this.$ = [$$[$0]]; 
 break;
-case 4: case 5:
+case 4: case 5: case 6: case 7: case 8:
  this.$ = $$[$0-1]; 
 break;
-case 6:
+case 9:
 
         this.$ = { tipo: "ERROR", clase: "Sintáctico", lexema: yytext, linea: this._$.first_line };
     
 break;
-case 7:
+case 10:
 
         this.$ = { tipo: "ERROR", clase: "Léxico", lexema: yytext, linea: this._$.first_line };
     
 break;
-case 8:
+case 11:
 
         this.$ = { tipo: "CREAR_TABLA", tabla: $$[$0-2], columnas: $$[$0], linea: this._$.first_line };
     
 break;
-case 9:
-
-        this.$ = { tipo: "ELIMINAR", tabla: $$[$0-2], id_registro: Number($$[$0]), linea: this._$.first_line };
-    
-break;
-case 10:
+case 12:
  this.$ = $$[$0-2]; this.$.push($$[$0]); 
 break;
-case 12:
+case 14:
  this.$ = { id: $$[$0-1], tipo_dato: $$[$0] }; 
+break;
+case 15:
+ this.$ = { id: $$[$0-2], tipo_dato: $$[$0] }; 
+break;
+case 16:
+
+        this.$ = { tipo: "INSERTAR", tabla: $$[$0-3], valores: $$[$0-1], linea: this._$.first_line };
+    
+break;
+case 17:
+
+        this.$ = { tipo: "ACTUALIZAR", tabla: $$[$0-5], valores: $$[$0-3], idCond: Number($$[$0]), linea: this._$.first_line };
+    
+break;
+case 18:
+
+        this.$ = { tipo: "ELIMINAR", tabla: $$[$0-2], idCond: Number($$[$0]), linea: this._$.first_line };
+    
+break;
+case 19:
+
+        this.$ = { tipo: "SELECCIONAR", tabla: $$[$0-2], columna: $$[$0], linea: this._$.first_line };
+    
+break;
+case 20:
+ this.$ = $$[$0-2]; Object.assign(this.$, $$[$0]); 
+break;
+case 21:
+ this.$ = $$[$0]; 
+break;
+case 22:
+ this.$ = {}; this.$[$$[$0-2]] = Number($$[$0]); 
+break;
+case 23:
+ this.$ = {}; this.$[$$[$0-2]] = $$[$0]; 
 break;
 }
 },
-table: [{2:$V0,3:1,4:2,6:3,7:4,9:5,10:$V1,11:$V2,12:$V3},{1:[3]},{2:$V0,5:[1,10],6:11,7:4,9:5,10:$V1,11:$V2,12:$V3},o($V4,[2,3]),{8:[1,12]},{8:[1,13]},{8:[1,14]},o($V4,[2,7]),{12:[1,15]},{15:[1,16]},{1:[2,1]},o($V4,[2,2]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),{13:[1,17]},{16:[1,18]},{12:$V5,14:19,18:20},{8:[2,9]},{8:[2,8],17:[1,22]},o($V6,[2,11]),{12:[1,23]},{12:$V5,18:24},o($V6,[2,12]),o($V6,[2,10])],
-defaultActions: {10:[2,1],18:[2,9]},
+table: [{2:$V0,3:1,4:2,6:3,7:4,9:5,10:6,11:7,12:8,13:$V1,14:$V2,15:$V3},{1:[3]},{2:$V0,5:[1,13],6:14,7:4,9:5,10:6,11:7,12:8,13:$V1,14:$V2,15:$V3},o($V4,[2,3]),{8:[1,15]},{8:[1,16]},{8:[1,17]},{8:[1,18]},{8:[1,19]},{8:[1,20]},o($V4,[2,10]),{15:[1,21]},{21:[1,22],26:[1,23],27:[1,24]},{1:[2,1]},o($V4,[2,2]),o($V4,[2,4]),o($V4,[2,5]),o($V4,[2,6]),o($V4,[2,7]),o($V4,[2,8]),o($V4,[2,9]),{16:[1,25]},{15:$V5,22:26,28:27},{25:[1,29]},{15:[1,30]},{15:$V6,17:31,19:32},{18:[1,35],23:[1,34]},o($V7,[2,21]),{20:[1,36]},{8:[2,18]},{8:[2,19]},{8:[2,11],18:[1,37]},o($V8,[2,13]),{15:[1,38],20:[1,39]},{8:[2,16],24:[1,40]},{15:$V5,28:41},{25:[1,42],29:[1,43]},{15:$V6,19:44},o($V8,[2,14]),{15:[1,45]},{25:[1,46]},o($V7,[2,20]),o($V7,[2,22]),o($V7,[2,23]),o($V8,[2,12]),o($V8,[2,15]),{8:[2,17]}],
+defaultActions: {13:[2,1],29:[2,18],30:[2,19],46:[2,17]},
 parseError: function parseError (str, hash) {
     if (hash.recoverable) {
         this.trace(str);
@@ -704,36 +734,40 @@ case 0:
 break;
 case 1:
 break;
-case 2:return 11;
+case 2:return 14;
 break;
-case 3:return 13;
+case 3:return 16;
 break;
-case 4:return 15;
+case 4:return 26;
 break;
-case 5:return 'RW_IN';
+case 5:return 24;
 break;
-case 6:return 12;
+case 6:return 15;
 break;
-case 7:return 16;
+case 7:return 25;
 break;
-case 8:return 'CORCHETE_IZQ';
+case 8: yy_.yytext = yy_.yytext.slice(1, -1); return 29; 
 break;
-case 9:return 'CORCHETE_DER';
+case 9:return 21;
 break;
-case 10:return 'IGUAL';
+case 10:return 23;
 break;
-case 11:return 17;
+case 11:return 20;
 break;
-case 12:return 8;
+case 12:return 18;
 break;
-case 13:return 5;
+case 13:return 8;
 break;
-case 14:return 10;
+case 14:return 27;
+break;
+case 15:return 5;
+break;
+case 16:return 13;
 break;
 }
 },
-rules: [/^(?:\s+)/i,/^(?:\/\*[\s\S]*?\*\/)/i,/^(?:TABLE\b)/i,/^(?:COLUMNS\b)/i,/^(?:DELETE\b)/i,/^(?:IN\b)/i,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/i,/^(?:[0-9]+(\.[0-9]+)?)/i,/^(?:\[)/i,/^(?:\])/i,/^(?:=)/i,/^(?:,)/i,/^(?:;)/i,/^(?:$)/i,/^(?:.)/i],
-conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14],"inclusive":true}}
+rules: [/^(?:\s+)/i,/^(?:\/\*[\s\S]*?\*\/)/i,/^(?:TABLE\b)/i,/^(?:COLUMNS\b)/i,/^(?:DELETE\b)/i,/^(?:IN\b)/i,/^(?:[a-zA-Z_][a-zA-Z0-9_]*)/i,/^(?:[0-9]+(\.[0-9]+)?)/i,/^(?:"[^\"]*")/i,/^(?:\[)/i,/^(?:\])/i,/^(?:=)/i,/^(?:,)/i,/^(?:;)/i,/^(?:\.)/i,/^(?:$)/i,/^(?:.)/i],
+conditions: {"INITIAL":{"rules":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],"inclusive":true}}
 });
 return lexer;
 })();
